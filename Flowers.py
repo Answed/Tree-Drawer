@@ -31,7 +31,7 @@ def FlowerLeafsB(length):
         tr.left(90)
     tr.end_fill()
 
-def OuterFlowerLeaf(length):
+def OuterFlowerLeaf(length): # has to be make more efficient
     tr.right(90)
     setFlowerColor()
     tr.begin_fill()

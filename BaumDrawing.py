@@ -32,7 +32,7 @@ tree_Para_Str = "10/100/20/0"
 hideTurtle = False
 turtleSpeed = 0
 startPointPosition = 200
-save_file_path = "D:\CodeStuff\Scripte\Schule\BaumMaler\SaveFiles"
+save_file_path = "D:\CodeStuff\Scripte\BaumMaler\SaveFiles"
 
 settings_list.append(hideTurtle)
 settings_list.append(turtleSpeed)
