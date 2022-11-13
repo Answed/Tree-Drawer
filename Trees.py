@@ -96,7 +96,10 @@ def baum (_stop, length, angle, switch):
             if(length - 10 >= _stop):
                 baum(_stop, length-10, angle, switch)
             else: blatt(10 * rd.uniform(0.5, 1))
-    tr.right(angle*2)
+    tr.right(angle*1.5)
+    if(length - 10 >= _stop):
+        baum(_stop, length-10, angle, switch)
+    tr.right(angle*0.5)
     if(length - 10 >= _stop):
         baum(_stop, length-10, angle, switch)
     tr.left(angle)
