@@ -72,6 +72,15 @@ def leftSide(i, length):
     back(length)
     tr.left(i * 10)
 
+def fruit():
+    threshhold = rd.randint(0, 10)
+    if (threshhold < 5):
+        tr.pencolor("red")
+        tr.fillcolor("red")
+        tr.begin_fill()
+        tr.circle(rd.randint(3, 5))
+        tr.end_fill()
+
 def blatt(length):
     tr.right(30)
     setRandomLeafColor()
@@ -81,6 +90,12 @@ def blatt(length):
     tr.begin_fill()
     leftSide(1, length)
     tr.right(65)
+    fruit()
+
+def randomLeaf():
+    threshhold = rd.randint(0, 10)
+    if (threshhold < 5):
+        blatt(10 * rd.uniform(0.5, 1))
 
 def baum (_stop, length, angle, switch):
     tr.pencolor("saddlebrown")
@@ -91,15 +106,21 @@ def baum (_stop, length, angle, switch):
         case 0:
             if(length - 10 >= _stop):
                 baum(_stop, length-10, angle, switch)
-            blatt(10 * rd.uniform(0.5, 1))
+            blatt(10 * rd.uniform(0.5, 0.7))
         case 1:
             if(length - 10 >= _stop):
                 baum(_stop, length-10, angle, switch)
             else: blatt(10 * rd.uniform(0.5, 1))
-    tr.right(angle*1.5)
+        case 2:
+            if(length - 10 >= _stop):
+                baum(_stop, length-10, angle, switch)
+            elif (length == _stop): 
+                blatt(10 * rd.uniform(0.5, 1))
+            randomLeaf()
+    tr.right(angle*1.25)
     if(length - 10 >= _stop):
         baum(_stop, length-10, angle, switch)
-    tr.right(angle*0.5)
+    tr.right(angle*0.75)
     if(length - 10 >= _stop):
         baum(_stop, length-10, angle, switch)
     tr.left(angle)

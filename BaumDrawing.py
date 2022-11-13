@@ -25,10 +25,10 @@ enable_trees = tk.BooleanVar()
 enable_grass.set(True)  
 enable_trees.set(True)
 
-grass_Para = [10, 30, 20, 50]
-tree_Para = [10, 100, 20, 0]
-grass_Para_Str = "10/30/20/50"
-tree_Para_Str = "10/100/20/0"
+grass_Para = [10, 30, 20, 40]
+tree_Para = [20, 90, 35, 2]
+grass_Para_Str = "10/30/20/40"
+tree_Para_Str = "20/90/40/2"
 hideTurtle = False
 turtleSpeed = 0
 startPointPosition = 200
@@ -163,7 +163,6 @@ def unevenAmountOfBTrees(length, amount):
     tr.left(90)
     ts.baum(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
     tr.right(90)
-    print(distance)
     treeDistance(-distance, (amount-1)/2)
     tr.forward(distance * ((amount - 1) / 2))
     treeDistance(distance, (amount-1)/2)
@@ -177,19 +176,16 @@ def drawGrass(values):
 def drawTrees(values):
     if(enable_trees.get()):
         if (values[2] == 1):
-            print("OOf")
             tr.left(90)
             ts.baum(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
             tr.right(90)
         elif (values[2] % 2 == 0):
             evenAmountOfBTrees(values[1], values[2])
         else:
-            print("Doppel OOF")
             unevenAmountOfBTrees(values[1], values[2])    
 
 def drawFlowers(values):
     distance = (values[1]-25)/(values[3]/2)
-    print(values[1])
     flowerDistance(distance, values[3]/2)
     ts.back(distance * (values[3]/2))
     flowerDistance(-distance, values[3]/2)
@@ -268,7 +264,6 @@ class PresetTab(tk.Frame):
         self.LoadPresets()
 
     def SavePreset(self, preset_name):
-        print(self.createNewFile.get())
         if(self.createNewFile.get()):
             self.CreatePreset(preset_name)
         else: 
