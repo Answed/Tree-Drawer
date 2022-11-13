@@ -58,7 +58,7 @@ def OuterFlowerLeaf(length): # has to be make more efficient
     tr.left(90)
     ts.back(length/2)
     tr.pendown()
-    
+
 def FlowerLeafs(length, color):
      if (length == 20):
         FlowerLeafsA(color)

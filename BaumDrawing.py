@@ -197,6 +197,7 @@ def drawFlowers(values):
 
 def treeDrawer():
     tr.reset()
+    tr.screensize(bg="deepskyblue")
     tr.speed(settings_list[1])
     if(settings_list[0]):
         tr.hideturtle()
