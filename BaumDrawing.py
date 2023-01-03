@@ -1,12 +1,11 @@
 from fileinput import close
 import os
 import turtle as tr
-import random as rd
-import math as mt
 import tkinter as tk
 from tkinter import ttk
 import Trees as ts
 import Flowers as fl
+import Grass as gr
 
 main_W = tk.Tk()
 main_W.title("Tree drawer 3000")
@@ -25,7 +24,7 @@ enable_trees = tk.BooleanVar()
 enable_grass.set(True)  
 enable_trees.set(True)
 
-grass_Para = [10, 30, 20, 40]
+grass_Para = [[10, 30],[20, 40]] # first column is for grass leaf length and the second for the height parameters
 tree_Para = [20, 90, 35, 2]
 grass_Para_Str = "10/30/20/40"
 tree_Para_Str = "20/90/40/2"
@@ -38,6 +37,7 @@ settings_list.append(hideTurtle)
 settings_list.append(turtleSpeed)
 settings_list.append(save_file_path)
 
+#Handles all the preset related mechanics like loading, overwritting and saving new presets
 class Preset():
     preset_name = ''
     dataframe = ""
@@ -48,6 +48,7 @@ class Preset():
         self.preset_name = name
         self.LoadFile()
 
+    #Laods the file and saves it into the dataframe for reading the string from the selected preset
     def LoadFile(self):
         self.save_file_name = os.path.join(settings_list[2] + "\\" + self.preset_name + ".txt")
         if(os.path.exists(self.save_file_name)):
@@ -56,7 +57,8 @@ class Preset():
             self.save_file.close()
         else:
             self.CreateNewFile()
-            
+
+    #Creates a new file or overwrittes a file when it`s already exist     
     def CreateNewFile(self):
         self.save_file = open(self.save_file_name, "w")
         self.save_file.write(self.dataframe) 
@@ -65,12 +67,15 @@ class Preset():
     def DeleteFile(self):
         os.remove(self.save_file_name)
 
+#Loads all presets at the beginning of the runtime and changes the settings to the saved settings from last runtime
 def LoadFiles():
     global presets_list
     global settings_list
+    #Handles the files loading in the list so the user can access them
     for (root, dirs, files) in os.walk(save_file_path):
         for file in files:
             presets_list.append(Preset(file.replace(".txt","")))
+    #Hanldes that the settings are the same as they where when the user left the programm
     for preset in presets_list:
         if (preset.preset_name == "Settings"):
             settings_list_file = [str(x) for x in preset.dataframe.split('/')]
@@ -79,6 +84,7 @@ def LoadFiles():
             settings_list[2] = (settings_list_file[2])
             presets_list.remove(preset)
 
+#Is used for creating the string which then gets saved as a preset file
 def stringConstructor(list, element_divider):
     newString = ""
     for i in range(len(list)):
@@ -93,30 +99,8 @@ def setStartPoint():
     ts.back(startPointPosition)
     tr.right(90)
 
-def grasLeafe(length, height):
-    angle = mt.degrees(mt.atan(height/(length/2)))
-    hypotenuse = mt.sqrt(pow(length/2, 2) + pow(height, 2))
-    tr.forward(length)
-    ts.back(length)
-    tr.left(angle)
-    tr.forward(hypotenuse)
-    tr.right(180 - 2*(90 - angle))
-    tr.forward(hypotenuse)
-    tr.left(angle)
-
-def grass(length):
-    ts.back(length)
-    current_length = 0
-    while (current_length < length * 2):
-        rd_length = rd.uniform(grass_Para[0], grass_Para[1])
-        rd_height = rd.uniform(grass_Para[2], grass_Para[3])
-        current_length += rd_length
-        ts.setRandomLeafColor()
-        tr.begin_fill()
-        grasLeafe(rd_length, rd_height)
-        tr.end_fill()
-    ts.back(length)
-
+#Is used for retrieving the Values the user made to determine what the programm will draw and how many of it
+#This only gets used in the function treeDrawer and when a new preset is created
 def setValues():
     values = list()
     values.append(int(layers_of_grass_E.get()))
@@ -137,60 +121,8 @@ def updateParameters(new_grass_Para, new_tree_Para, startPosition):
     tree_Para_Str = stringConstructor(tree_Para, '/')
     startPointPosition = startPosition
 
-def treeDistance(distance, amount):
-    for i in range(int(amount)):
-        tr.forward(distance)
-        tr.left(90)
-        ts.baum(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
-        tr.right(90)
-
-def flowerDistance(distance, amount):
-    for i in range(int(amount)):
-        tr.forward(distance)
-        tr.left(90)
-        fl.FlowerB(50)
-        tr.right(90)
-
-def evenAmountOfBTrees(length, amount):
-    distance = length / (amount/2)
-    treeDistance(distance, amount/2)
-    ts.back(distance * (amount/2))
-    treeDistance(-distance, amount/2)
-    ts.back(-distance * (amount/2))
-
-def unevenAmountOfBTrees(length, amount):
-    distance = length / ((amount - 1) / 2)
-    tr.left(90)
-    ts.baum(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
-    tr.right(90)
-    treeDistance(-distance, (amount-1)/2)
-    tr.forward(distance * ((amount - 1) / 2))
-    treeDistance(distance, (amount-1)/2)
-    ts.back(distance * ((amount - 1) / 2))
-
-def drawGrass(values):
-    if (enable_grass.get()):
-        for i in range(values[0]):
-            grass(values[1])
-
-def drawTrees(values):
-    if(enable_trees.get()):
-        if (values[2] == 1):
-            tr.left(90)
-            ts.baum(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
-            tr.right(90)
-        elif (values[2] % 2 == 0):
-            evenAmountOfBTrees(values[1], values[2])
-        else:
-            unevenAmountOfBTrees(values[1], values[2])    
-
-def drawFlowers(values):
-    distance = (values[1]-25)/(values[3]/2)
-    flowerDistance(distance, values[3]/2)
-    ts.back(distance * (values[3]/2))
-    flowerDistance(-distance, values[3]/2)
-    ts.back(-distance * (values[3]/2))
-
+# Main drawing function. Place where every other drawing function gets started
+# Values is a list where the user inputs from the main tab are saved
 def treeDrawer():
     tr.reset()
     tr.screensize(bg="deepskyblue")
@@ -203,6 +135,72 @@ def treeDrawer():
     drawFlowers(values)
     drawGrass(values)
 
+# Draws grass over the specific lenght and layers it.
+# values[0] specifices the amount of layers the grass will have
+# values[1] specifices the length of the grass
+def drawGrass(values):
+    if (enable_grass.get()):
+        for i in range(values[0]):
+            gr.grass(values[1], grass_Para)
+
+# Handles the drawing from the trees
+# tree_Para[0] defines the stop where the recursion will end
+# tree_Para[1] defines the length from the first line of the tree which gets shorter as the recursion proceeds
+# tree_Para[2] defines the angle from the branches
+# tree_Para[3] defines the placements of fruits and leafes. There are 3 different modes
+def drawTrees(values):
+    if(enable_trees.get()):
+        if (values[2] == 1): # When there is only one tree
+            tr.left(90)
+            ts.baum(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
+            tr.right(90)
+        elif (values[2] % 2 == 0):
+            evenAmountOfBTrees(values[1], values[2])
+        else:
+            unevenAmountOfBTrees(values[1], values[2])    
+
+# Draws trees based on the amount with a certain space between them
+def treeDistance(distance, amount):
+    for i in range(int(amount)):
+        tr.forward(distance)
+        tr.left(90)
+        ts.baum(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
+        tr.right(90)
+
+#Draws a tree in the middle and then evenly on both sides of it
+def unevenAmountOfBTrees(length, amount):
+    tr.left(90)
+    ts.baum(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
+    tr.right(90)
+    evenAmountOfBTrees(length, amount -1)
+
+# Distributes the trees evenly on both sides from the middle 
+def evenAmountOfBTrees(length, amount):
+    distance = length / (amount/2)
+    treeDistance(distance, amount/2)
+    ts.back(distance * (amount/2))
+    treeDistance(-distance, amount/2)
+    ts.back(-distance * (amount/2))
+
+# Handles the drawing of the flowers
+# values[1] defines the length of the picture
+# values[3] defines the amount of flowers
+def drawFlowers(values):
+    distance = (values[1]-25)/(values[3]/2)
+    flowerDistance(distance, values[3]/2)
+    ts.back(distance * (values[3]/2))
+    flowerDistance(-distance, values[3]/2)
+    ts.back(-distance * (values[3]/2))
+
+# Works the same as tree distance
+def flowerDistance(distance, amount):
+    for i in range(int(amount)):
+        tr.forward(distance)
+        tr.left(90)
+        fl.FlowerB(50)
+        tr.right(90)
+
+# Handles the parameters from the parameter Tab they define specifics like the tree lenght or the gras leaf hight    
 class ParameterTab(tk.Frame):
     grass_Para = list()
     tree_Para = list()
@@ -234,7 +232,7 @@ class ParameterTab(tk.Frame):
         tree_Para_String = tree_para
         self.tree_Para = [int(x) for x in tree_Para_String.split('/')]
         updateParameters(self.grass_Para, self.tree_Para, int(startPoint))
-
+# Hanldes the prestes and applies them
 class PresetTab(tk.Frame):
     deleteAll = tk.BooleanVar()
     createNewFile = tk.BooleanVar()
@@ -305,18 +303,20 @@ class PresetTab(tk.Frame):
                     grass_para_E.insert(0, datalist[6] + '/' + datalist[7] + '/' + datalist[8] + '/' + datalist[9])
                     tree_para_E.insert(0, datalist[10] + '/' + datalist[11] + '/' + datalist[12])
 
+    # Either deletes one file or all of them based on a checkbox the user can click in the preset tab
     def DeletePreset(self):
         global presets_list
         for preset in presets_list:
-            if(preset.preset_name == self.presets.get(tk.ANCHOR)):
+            if(preset.preset_name == self.presets.get(tk.ANCHOR)): # Deletes one file
                 self.DeleteP(preset)
                 self.presets.delete(tk.ANCHOR)
-            if (self.deleteAll.get()):
+            if (self.deleteAll.get()): # Deletes all of them 
                 preset.DeleteFile()
                 self.presets.delete(0, tk.END)
         if(self.deleteAll.get()):
-            presets_list.clear()
+            presets_list.clear() # Clears the list after it 
     
+    # Is just for deleting one file not all of them
     def DeleteP(self, preset):
         preset.DeleteFile()
         presets_list.remove(preset)
