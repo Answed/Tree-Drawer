@@ -418,7 +418,7 @@ LoadFiles()
 
 settingsFile = Preset("Settings")
 settingsFile.dataframe = stringConstructor(settings_list, '/')
-settingsFile.CreateNewFile()
+settingsFile.CreateNewFile() # creates a new file when a file with this name doesen`t exist/Otherwise it just gets rewritten
 
 MainTab()
 settings = SettingsTab(tabcontrol)

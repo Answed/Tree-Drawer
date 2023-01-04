@@ -12,6 +12,7 @@ def setFlowerColor():
     tr.pencolor(color)
     tr.fillcolor(color)
 
+# Leafs are divided in two kinds a and b
 def FlowerLeafsA(color_f):
     color = randomFlowerColor()
     tr.pencolor(color)
@@ -51,10 +52,9 @@ def OuterFlowerLeaf(length): # has to be make more efficient
     tr.left(90)
     FlowerLeafsB(length)
     tr.penup()
-    tr.right(90)
-    ts.back(length)
-    tr.right(90)
-    ts.back(length)
+    for i in range(2):
+        tr.right(90)
+        ts.back(length)
     tr.left(90)
     ts.back(length/2)
     tr.pendown()
