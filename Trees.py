@@ -88,7 +88,7 @@ def leftSide(i, length):
 def randomFruit():
     threshhold = rd.randint(0, 10)
     if (threshhold < 5):
-        fruit(10 * rd.uniform(0.5, 1))
+        fruit()
 
 def fruit():
     threshhold = rd.randint(0, 10)
