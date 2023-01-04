@@ -152,7 +152,7 @@ def drawTrees(values):
     if(enable_trees.get()):
         if (values[2] == 1): # When there is only one tree
             tr.left(90)
-            ts.baum(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
+            ts.tree(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
             tr.right(90)
         elif (values[2] % 2 == 0):
             evenAmountOfBTrees(values[1], values[2])
@@ -164,13 +164,13 @@ def treeDistance(distance, amount):
     for i in range(int(amount)):
         tr.forward(distance)
         tr.left(90)
-        ts.baum(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
+        ts.tree(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
         tr.right(90)
 
 #Draws a tree in the middle and then evenly on both sides of it
 def unevenAmountOfBTrees(length, amount):
     tr.left(90)
-    ts.baum(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
+    ts.tree(tree_Para[0], tree_Para[1], tree_Para[2], tree_Para[3])
     tr.right(90)
     evenAmountOfBTrees(length, amount -1)
 
