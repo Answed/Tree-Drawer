@@ -414,19 +414,20 @@ def MainTab():
     amount_of_flowers_E.grid(column=1, row=5)
     start.grid(columnspan=2,row=6)
 
-LoadFiles()
+if __name__ == "__main__":
+    LoadFiles()
 
-settingsFile = Preset("Settings")
-settingsFile.dataframe = stringConstructor(settings_list, '/')
-settingsFile.CreateNewFile() # creates a new file when a file with this name doesen`t exist/Otherwise it just gets rewritten
+    settingsFile = Preset("Settings")
+    settingsFile.dataframe = stringConstructor(settings_list, '/')
+    settingsFile.CreateNewFile() # creates a new file when a file with this name doesen`t exist/Otherwise it just gets rewritten
 
-MainTab()
-settings = SettingsTab(tabcontrol)
-presets = PresetTab(tabcontrol)
-parameters = ParameterTab(tabcontrol) 
-tabcontrol.add(main_tab, text="Main")
-tabcontrol.add(parameters, text="Parameters")
-tabcontrol.add(presets, text="Presets")
-tabcontrol.add(settings, text="Settings")
-tabcontrol.pack(expand=1, fill="both")
-main_W.mainloop()
+    MainTab()
+    settings = SettingsTab(tabcontrol)
+    presets = PresetTab(tabcontrol)
+    parameters = ParameterTab(tabcontrol) 
+    tabcontrol.add(main_tab, text="Main")
+    tabcontrol.add(parameters, text="Parameters")
+    tabcontrol.add(presets, text="Presets")
+    tabcontrol.add(settings, text="Settings")
+    tabcontrol.pack(expand=1, fill="both")
+    main_W.mainloop()
