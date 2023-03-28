@@ -336,8 +336,8 @@ class PresetTab(tk.Frame):
         return tempstr
 
     def LoadPresets(self):
-        for i in presets_list:
-            self.presets.insert(tk.END,i.preset_name)   
+        for preset in presets_list:
+            self.presets.insert(tk.END,preset.preset_name)   
 
 class SettingsTab(tk.Frame):
     hideTurtle_ = tk.BooleanVar()
